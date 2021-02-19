@@ -12,6 +12,7 @@
 	<artifactId>mochileiro-bot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>mochileiro-bot</name>
+	<packaging>jar</packaging>
 	<description>Bot de gerenciamento de itens de RPG</description>
 	<properties>
 		<java.version>1.8</java.version>
