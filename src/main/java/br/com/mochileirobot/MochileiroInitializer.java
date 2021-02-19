@@ -28,7 +28,7 @@ public class MochileiroInitializer {
 
     @SneakyThrows
     public void run() {
-        JDA jda = JDABuilder.createDefault("ODEyMDUxODk1MjkyMDAyMzU2.YC7IQw.BqyOoYUIyJcYGRbiwRonkZkThms").build();
+        JDA jda = JDABuilder.createDefault(System.getenv("BOT_KEY")).build();
         jda.getPresence().setPresence(Activity.playing("RPG do Thynanzão"), true);
 
         jda.addEventListener(addItem);

@@ -1,1 +1,1 @@
-worker: sh target/bin/main
+web: java -jar mochileiro-bot-0.0.1-SNAPSHOT.jar
