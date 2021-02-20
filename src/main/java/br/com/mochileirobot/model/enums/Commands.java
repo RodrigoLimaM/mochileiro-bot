@@ -15,6 +15,8 @@ public enum Commands {
     REMOVERSTATS,
     PLAYERSTATS,
     JOGADORSTATS,
-    STATS
+    STATS,
+    HELP,
+    AJUDA
     ;
 }
