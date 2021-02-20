@@ -40,26 +40,14 @@ public class ShowStatsByPlayerName extends ListenerAdapter {
 
             String playerName = args[0].trim().toUpperCase();
 
-            List<Stat> items = playerService.getStatsByName(playerName);
+            List<Stat> stats = playerService.getStatsByName(playerName);
 
-            if(items == null) {
+            if(stats == null) {
                 channel.sendMessage("Player não existe :frowning2:").queue();
                 return;
             }
 
-            StringBuilder stringBuilder = new StringBuilder();
-
-            items.forEach(stat -> {
-                        stringBuilder.append("\n" +stat.getAttribute());
-                        stringBuilder.append(" - " +stat.getValue());
-                    });
-
-            MessageEmbed messageEmbed = new EmbedBuilder()
-                    .setTitle(playerName)
-                    .setDescription(stringBuilder.toString())
-                    .build();
-
-            channel.sendMessage(messageEmbed).queue();
+            channel.sendMessage(messageUtils.buildEmbedPlayerStats(stats, playerName)).queue();
         }
     }
 }

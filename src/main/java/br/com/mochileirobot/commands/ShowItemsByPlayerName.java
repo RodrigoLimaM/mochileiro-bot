@@ -4,8 +4,6 @@ import br.com.mochileirobot.model.Player.Item;
 import br.com.mochileirobot.model.enums.Commands;
 import br.com.mochileirobot.service.PlayerService;
 import br.com.mochileirobot.util.MessageUtils;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -47,21 +45,7 @@ public class ShowItemsByPlayerName extends ListenerAdapter {
                 return;
             }
 
-            StringBuilder stringBuilder = new StringBuilder();
-
-            items.stream()
-                    .filter(item -> item.getQuantity() != 0)
-                    .forEach(item -> {
-                        stringBuilder.append("\n" +item.getName());
-                        stringBuilder.append(" - " +item.getQuantity());
-                    });
-
-            MessageEmbed messageEmbed = new EmbedBuilder()
-                    .setTitle(playerName)
-                    .setDescription(stringBuilder.toString())
-                    .build();
-
-            channel.sendMessage(messageEmbed).queue();
+            channel.sendMessage(messageUtils.buildEmbedPlayerItems(items, playerName)).queue();
         }
     }
 }

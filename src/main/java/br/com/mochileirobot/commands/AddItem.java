@@ -1,5 +1,6 @@
 package br.com.mochileirobot.commands;
 
+import br.com.mochileirobot.model.Player;
 import br.com.mochileirobot.model.enums.Commands;
 import br.com.mochileirobot.service.PlayerService;
 import br.com.mochileirobot.util.MessageUtils;
@@ -40,13 +41,13 @@ public class AddItem extends ListenerAdapter {
                 playerName = args[0].trim().toUpperCase();
                 item = args[1].trim().toUpperCase();
                 quantity = Integer.parseInt(args[2].trim());
+
+                Player player = playerService.addItem(playerName, item, quantity);
+                channel.sendMessage("Adicionado :school_satchel:").queue();
+                channel.sendMessage(messageUtils.buildEmbedPlayerItems(player.getItems(), playerName)).queue();
             } catch (NumberFormatException ex) {
                 channel.sendMessage("Algo deu errado :frowning2:").queue();
             }
-
-            playerService.addItem(playerName, item, quantity);
-
-            channel.sendMessage("Adicionado :school_satchel:").queue();
         }
 
     }

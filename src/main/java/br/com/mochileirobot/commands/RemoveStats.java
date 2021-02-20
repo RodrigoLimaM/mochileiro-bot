@@ -42,19 +42,23 @@ public class RemoveStats extends ListenerAdapter {
                 playerName = args[0].trim().toUpperCase();
                 stat = args[1].trim().toUpperCase();
                 value = Integer.parseInt(args[2].trim());
+
+                if(!playerService.isValidAttribute(stat)) {
+                    channel.sendMessage("Atributo não existente :frowning2:").queue();
+                    return;
+                }
+
+                Player player = playerService.removeStat(playerName, stat, value);
+                if (player != null) {
+                    channel.sendMessage("Atributo diminuido de " + player.getName() + " :arrow_down:").queue();
+                    channel.sendMessage(messageUtils.buildEmbedPlayerStats(player.getStats(), player.getName())).queue();
+
+                } else {
+                    channel.sendMessage("Player não existe :frowning2:").queue();
+                }
+
             } catch (NumberFormatException ex) {
                 channel.sendMessage("Algo deu errado :frowning2:").queue();
-            }
-
-            String finalStat = stat;
-            if(playerService.isValidAttribute(finalStat)) {
-                Player player = playerService.removeStat(playerName, stat, value);
-                if (player != null)
-                    channel.sendMessage("Atributo diminuido de " +player.getName() +" :arrow_down:").queue();
-                else
-                    channel.sendMessage("Player não existe :frowning2:").queue();
-            } else {
-                channel.sendMessage("Atributo não existente :frowning2:").queue();
             }
 
         }

@@ -1,6 +1,13 @@
 package br.com.mochileirobot.util;
 
+import br.com.mochileirobot.model.Player;
+import br.com.mochileirobot.model.Player.Item;
+import br.com.mochileirobot.model.Player.Stat;
 import br.com.mochileirobot.model.enums.Commands;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+
+import java.util.List;
 
 public class MessageUtils {
 
@@ -9,8 +16,7 @@ public class MessageUtils {
 
     public boolean isCommandMessage(String message, String ...args) {
         //TODO make null safe
-        return message.charAt(0) == COMMAND_PREFIX
-                && isValidCommandType(message, args);
+        return isValidCommandType(message, args);
     }
 
     private boolean isValidCommandType(String message, String[] args) {
@@ -21,6 +27,37 @@ public class MessageUtils {
                 return true;
         }
         return false;
+    }
+
+    public MessageEmbed buildEmbedPlayerItems(List<Item> items, String playerName) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        items.stream()
+                .filter(item -> item.getQuantity() != 0)
+                .forEach(item -> {
+                    stringBuilder.append("\n" +item.getName());
+                    stringBuilder.append(" - " +item.getQuantity());
+                });
+
+        return new EmbedBuilder()
+                .setTitle(playerName)
+                .setDescription(stringBuilder.toString())
+                .build();
+    }
+
+    public MessageEmbed buildEmbedPlayerStats(List<Stat> stats, String playerName) {
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stats.forEach(stat -> {
+            stringBuilder.append("\n" +stat.getAttribute());
+            stringBuilder.append(" - " +stat.getValue());
+        });
+
+        return new EmbedBuilder()
+                .setTitle(playerName)
+                .setDescription(stringBuilder.toString())
+                .build();
     }
 
     public String[] getAddItemsArgs(String message) {

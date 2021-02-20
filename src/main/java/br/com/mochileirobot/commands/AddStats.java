@@ -42,18 +42,19 @@ public class AddStats extends ListenerAdapter {
                 playerName = args[0].trim().toUpperCase();
                 stat = args[1].trim().toUpperCase();
                 value = Integer.parseInt(args[2].trim());
+
+                String finalStat = stat;
+                if(playerService.isValidAttribute(finalStat)) {
+                    Player player = playerService.addStat(playerName, stat, value);
+                    channel.sendMessage("Atributo evoluido de " +player.getName() +" :up:").queue();
+                    channel.sendMessage(messageUtils.buildEmbedPlayerStats(player.getStats(), player.getName())).queue();
+                } else {
+                    channel.sendMessage("Atributo não existente :frowning2:").queue();
+                }
+
             } catch (NumberFormatException ex) {
                 channel.sendMessage("Algo deu errado :frowning2:").queue();
             }
-
-            String finalStat = stat;
-            if(playerService.isValidAttribute(finalStat)) {
-                Player player = playerService.addStat(playerName, stat, value);
-                channel.sendMessage("Atributo evoluido de " +player.getName() +" :up:").queue();
-            } else {
-                channel.sendMessage("Atributo não existente :frowning2:").queue();
-            }
-
         }
     }
 

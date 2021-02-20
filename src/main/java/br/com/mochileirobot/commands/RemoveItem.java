@@ -44,23 +44,25 @@ public class RemoveItem extends ListenerAdapter {
                 playerName = args[0].trim().toUpperCase();
                 item = args[1].trim().toUpperCase();
                 quantity = Integer.parseInt(args[2].trim());
+
+                try {
+                    Player player = playerService.removeItem(playerName, item, quantity);
+
+                    if(player != null) {
+                        channel.sendMessage("Removido item de " + player.getName() + " :school_satchel:").queue();
+                        channel.sendMessage(messageUtils.buildEmbedPlayerItems(player.getItems(), playerName)).queue();
+                    } else {
+                        channel.sendMessage("Player não existe :frowning2:").queue();
+                    }
+                } catch (NotEnoughException ex) {
+                    channel.sendMessage("Quantidade insuficiente :frowning2:").queue();
+                } catch (NonExistentItemException ex) {
+                    channel.sendMessage("Item não existente :frowning2:").queue();
+                }
+
             } catch (NumberFormatException ex) {
                 channel.sendMessage("Algo deu errado :frowning2:").queue();
             }
-
-            try {
-                Player player = playerService.removeItem(playerName, item, quantity);
-
-                if(player != null)
-                    channel.sendMessage("Removido item de " +player.getName() +" :school_satchel:").queue();
-                else
-                    channel.sendMessage("Player não existe :frowning2:").queue();
-            } catch (NotEnoughException ex) {
-                channel.sendMessage("Quantidade insuficiente :frowning2:").queue();
-            } catch (NonExistentItemException ex) {
-                channel.sendMessage("Item não existente :frowning2:").queue();
-            }
-
         }
     }
 }

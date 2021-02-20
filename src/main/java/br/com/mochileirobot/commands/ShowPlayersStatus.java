@@ -34,20 +34,7 @@ public class ShowPlayersStatus extends ListenerAdapter {
             List<Player> players = playerService.getPlayers();
 
             players.forEach(player -> {
-
-                StringBuilder stringBuilder = new StringBuilder();
-                player.getStats().forEach(stat -> {
-                    stringBuilder.append("\n" +stat.getAttribute());
-                    stringBuilder.append(" - " +stat.getValue());
-                });
-
-                MessageEmbed messageEmbed = new EmbedBuilder()
-                        .setTitle(player.getName())
-                        .setDescription(stringBuilder.toString())
-                        .build();
-
-                channel.sendMessage(messageEmbed).queue();
-
+                channel.sendMessage(messageUtils.buildEmbedPlayerStats(player.getStats(), player.getName())).queue();
             });
         }
     }
