@@ -43,7 +43,7 @@ public class Help extends ListenerAdapter {
                             +"**!stats, !stats** - Exibe atributos de todos os players. \n"
                     )
                     .setTitle(":robot: Comandos do Mochileiro :robot:")
-                    .setFooter("https://github.com/RodrigoLimaM/mochileiro-bot", "https://bots.ondiscord.xyz/favicon/android-chrome-256x256.png")
+//                    .setFooter("https://github.com/RodrigoLimaM/mochileiro-bot", "https://bots.ondiscord.xyz/favicon/android-chrome-256x256.png")
                     .build();
 
             channel.sendMessage(messageEmbed).queue();
