@@ -1,6 +1,9 @@
 package br.com.mochileirobot.commands;
 
-import br.com.mochileirobot.config.NotEnoughItemsException;
+import br.com.mochileirobot.config.NotEnoughException;
+import br.com.mochileirobot.config.NonExistentItemException;
+import br.com.mochileirobot.model.Player;
+import br.com.mochileirobot.model.enums.Commands;
 import br.com.mochileirobot.service.PlayerService;
 import br.com.mochileirobot.util.MessageUtils;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -24,7 +27,7 @@ public class RemoveItem extends ListenerAdapter {
         TextChannel channel = event.getChannel();
 
         if (!event.getAuthor().isBot()
-                && messageUtils.isCommandMessage(message, "REMOVEITEM", "REMOVERITEM")) {
+                && messageUtils.isCommandMessage(message, Commands.REMOVEITEM.name(), Commands.REMOVERITEM.name())) {
 
             String[] args = messageUtils.getRemoveItemsArgs(message);
 
@@ -46,10 +49,16 @@ public class RemoveItem extends ListenerAdapter {
             }
 
             try {
-                playerService.removeItem(playerName, item, quantity);
-                channel.sendMessage("Removido :school_satchel:").queue();
-            } catch (NotEnoughItemsException ex) {
+                Player player = playerService.removeItem(playerName, item, quantity);
+
+                if(player != null)
+                    channel.sendMessage("Removido item de " +player.getName() +" :school_satchel:").queue();
+                else
+                    channel.sendMessage("Player não existe :frowning2:").queue();
+            } catch (NotEnoughException ex) {
                 channel.sendMessage("Quantidade insuficiente :frowning2:").queue();
+            } catch (NonExistentItemException ex) {
+                channel.sendMessage("Item não existente :frowning2:").queue();
             }
 
         }

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ShowPlayersItems extends ListenerAdapter {
+public class ShowPlayersStatus extends ListenerAdapter {
 
     private MessageUtils messageUtils = new MessageUtils();
 
@@ -25,21 +25,20 @@ public class ShowPlayersItems extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
-
         String message = event.getMessage().getContentRaw();
         TextChannel channel = event.getChannel();
 
         if (!event.getAuthor().isBot()
-                && messageUtils.isCommandMessage(message, Commands.ITEMS.name(), Commands.ITENS.name())) {
+                && messageUtils.isCommandMessage(message, Commands.STATS.name())) {
 
             List<Player> players = playerService.getPlayers();
 
             players.forEach(player -> {
 
                 StringBuilder stringBuilder = new StringBuilder();
-                player.getItems().stream().filter(item -> item.getQuantity() != 0).forEach(item -> {
-                    stringBuilder.append("\n" +item.getName());
-                    stringBuilder.append(" - " +item.getQuantity());
+                player.getStats().forEach(stat -> {
+                    stringBuilder.append("\n" +stat.getAttribute());
+                    stringBuilder.append(" - " +stat.getValue());
                 });
 
                 MessageEmbed messageEmbed = new EmbedBuilder()

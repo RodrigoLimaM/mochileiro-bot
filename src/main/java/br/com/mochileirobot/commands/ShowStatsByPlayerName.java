@@ -1,6 +1,6 @@
 package br.com.mochileirobot.commands;
 
-import br.com.mochileirobot.model.Player.Item;
+import br.com.mochileirobot.model.Player.Stat;
 import br.com.mochileirobot.model.enums.Commands;
 import br.com.mochileirobot.service.PlayerService;
 import br.com.mochileirobot.util.MessageUtils;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ShowItemsByPlayerName extends ListenerAdapter {
+public class ShowStatsByPlayerName extends ListenerAdapter {
 
     private MessageUtils messageUtils = new MessageUtils();
 
@@ -29,9 +29,9 @@ public class ShowItemsByPlayerName extends ListenerAdapter {
         TextChannel channel = event.getChannel();
 
         if (!event.getAuthor().isBot()
-                && messageUtils.isCommandMessage(message, Commands.PLAYERITEMS.name(), Commands.JOGADORITENS.name())) {
+                && messageUtils.isCommandMessage(message, Commands.PLAYERSTATS.name(), Commands.JOGADORSTATS.name())) {
 
-            String[] args = messageUtils.getShowItemsByNameArgs(message);
+            String[] args = messageUtils.getShowStatsByNameArgs(message);
 
             if (args.length != 1) {
                 channel.sendMessage("Algo deu errado :frowning2:").queue();
@@ -40,7 +40,7 @@ public class ShowItemsByPlayerName extends ListenerAdapter {
 
             String playerName = args[0].trim().toUpperCase();
 
-            List<Item> items = playerService.getItemsByName(playerName);
+            List<Stat> items = playerService.getStatsByName(playerName);
 
             if(items == null) {
                 channel.sendMessage("Player não existe :frowning2:").queue();
@@ -49,11 +49,9 @@ public class ShowItemsByPlayerName extends ListenerAdapter {
 
             StringBuilder stringBuilder = new StringBuilder();
 
-            items.stream()
-                    .filter(item -> item.getQuantity() != 0)
-                    .forEach(item -> {
-                        stringBuilder.append("\n" +item.getName());
-                        stringBuilder.append(" - " +item.getQuantity());
+            items.forEach(stat -> {
+                        stringBuilder.append("\n" +stat.getAttribute());
+                        stringBuilder.append(" - " +stat.getValue());
                     });
 
             MessageEmbed messageEmbed = new EmbedBuilder()

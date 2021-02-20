@@ -28,6 +28,9 @@ public class Player {
     @Field(name = "items")
     private List<Item> items;
 
+    @Field(name = "stats")
+    List<Stat> stats;
+
     @Getter
     @Setter
     @Builder
@@ -41,5 +44,20 @@ public class Player {
 
         @Field(name = "quantity")
         private Integer quantity;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @ToString
+    public static class Stat {
+
+        @Field(name = "name")
+        private String attribute;
+
+        @Field(name = "quantity")
+        private Integer value;
     }
 }

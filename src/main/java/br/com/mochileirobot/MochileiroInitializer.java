@@ -1,9 +1,13 @@
 package br.com.mochileirobot;
 
 import br.com.mochileirobot.commands.AddItem;
+import br.com.mochileirobot.commands.AddStats;
 import br.com.mochileirobot.commands.RemoveItem;
+import br.com.mochileirobot.commands.RemoveStats;
 import br.com.mochileirobot.commands.ShowItemsByPlayerName;
 import br.com.mochileirobot.commands.ShowPlayersItems;
+import br.com.mochileirobot.commands.ShowPlayersStatus;
+import br.com.mochileirobot.commands.ShowStatsByPlayerName;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -26,6 +30,18 @@ public class MochileiroInitializer {
     @Autowired
     ShowPlayersItems showPlayersItems;
 
+    @Autowired
+    AddStats addStats;
+
+    @Autowired
+    RemoveStats removeStats;
+
+    @Autowired
+    ShowStatsByPlayerName showStatsByPlayerName;
+
+    @Autowired
+    ShowPlayersStatus showPlayersStatus;
+
     @SneakyThrows
     public void run() {
         JDA jda = JDABuilder.createDefault(System.getenv("BOT_KEY")).build();
@@ -35,6 +51,10 @@ public class MochileiroInitializer {
         jda.addEventListener(removeItem);
         jda.addEventListener(showItemsByPlayerName);
         jda.addEventListener(showPlayersItems);
+        jda.addEventListener(addStats);
+        jda.addEventListener(removeStats);
+        jda.addEventListener(showStatsByPlayerName);
+        jda.addEventListener(showPlayersStatus);
     }
 
 }
